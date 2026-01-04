@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🌟 星盤分析系統</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>🌠 星盤分析系統 Web 版</h1>
+    <form id="astroForm">
+      <label>出生日期：<input type="date" id="birthDate" required></label>
+      <label>出生時間：<input type="time" id="birthTime" required></label>
+      <label>地點：
+        <select id="birthPlace">
+          <option>香港</option><option>台北</option><option>上海</option>
+        </select>
+      </label>
+      <button type="submit">產生報告</button>
+    </form>
+    <section id="report"></section>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

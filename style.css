@@ -1,0 +1,32 @@
+document.getElementById("astroForm").addEventListener("submit", (e)=>{
+  e.preventDefault();
+
+  const date = document.getElementById("birthDate").value;
+  const time = document.getElementById("birthTime").value;
+  const place = document.getElementById("birthPlace").value;
+
+  // 🔹 模擬：隨機生成四元素統計（之後改為真實算法）
+  const elements = ["火","土","風","水"];
+  const values = elements.map(()=> Math.floor(Math.random()*3)+1);
+
+  // 顯示報告
+  const container = document.getElementById("report");
+  container.innerHTML = `
+    <div class="result">
+      <h3>📜 出生資訊</h3>
+      <p>${date} ${time} ｜ ${place}</p>
+      <h3>🔥 元素分佈</h3>
+      <div class="chart">
+        ${elements.map((e,i)=>`
+          <div class="bar">
+            <div style="height:${values[i]*50}px"></div>
+            <p>${e} (${values[i]})</p>
+          </div>
+        `).join("")}
+      </div>
+      <h3>🔭 相位示例</h3>
+      <p>☉ 太陽 △ ☽ 月亮 — 調和互補，內在穩定。</p>
+      <p>♀ 金星 □ ♂ 火星 — 情感與慾望的平衡挑戰。</p>
+    </div>
+  `;
+});
