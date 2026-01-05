@@ -1,15 +1,14 @@
-document.getElementById("astroForm").addEventListener("submit", (e)=>{
+document.getElementById("astroForm").addEventListener("submit", (e)=> {
   e.preventDefault();
 
-  const date = document.getElementById("birthDate").value;
-  const time = document.getElementById("birthTime").value;
-  const place = document.getElementById("birthPlace").value;
+  const date = document.getElementById("birthDate").value || "未知日期";
+  const time = document.getElementById("birthTime").value || "未知時間";
+  const place = document.getElementById("birthPlace").value || "未知地點";
 
-  // 🔹 模擬：隨機生成四元素統計（之後改為真實算法）
+  // 模擬元素統計
   const elements = ["火","土","風","水"];
   const values = elements.map(()=> Math.floor(Math.random()*3)+1);
 
-  // 顯示報告
   const container = document.getElementById("report");
   container.innerHTML = `
     <div class="result">
