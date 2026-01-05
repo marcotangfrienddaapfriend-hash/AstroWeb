@@ -1,54 +1,55 @@
-const { julian, planetposition, solar, data } = astron; // 由 CDN 引入的全域物件
+body {
+  font-family: 'Noto Sans TC', sans-serif;
+  background: #f7faff;
+  color: #222;
+  margin: 0;
+  padding: 20px;
+}
 
-document.getElementById("astroForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
+.container {
+  max-width: 900px;
+  margin: auto;
+}
 
-  const dateStr = document.getElementById("birthDate").value; // e.g. 1996-08-28
-  const timeStr = document.getElementById("birthTime").value; // 07:35
-  const place = document.getElementById("birthPlace").value;
-  
-  const [year, month, day] = dateStr.split("-").map(Number);
-  const [hour, minute] = timeStr.split(":").map(Number);
+h1 {
+  text-align: center;
+  color: #2a479e;
+}
 
-  // 🔹 轉為儒略日 (Julian Day)
-  const jd = julian.CalendarToJD(new julian.Calendar(year, month, day, hour + minute/60));
+form {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
 
-  // 🔹 載入內建行星星曆資料（簡化）
-  const earth = new planetposition.Planet(data.earth);
-  const jupiter = new planetposition.Planet(data.jupiter);
-  const mars = new planetposition.Planet(data.mars);
+input, button {
+  padding: 5px 10px;
+  font-size: 1em;
+}
 
-  // 🔹 計算太陽視黃經（Ecliptic longitude）
-  const sun = solar.apparentVSOP87(earth, jd);
-  const lonSun = sun.lon * 180 / Math.PI;
+button {
+  background: #4263eb;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
 
-  // 🔹 行星例子
-  const lonJup = jupiter.position(jd).lon * 180 / Math.PI;
-  const lonMars = mars.position(jd).lon * 180 / Math.PI;
+button:hover {
+  background: #2748c9;
+}
 
-  // 🔹 對應星座
-  const zodiacSigns = [
-    "白羊", "金牛", "雙子", "巨蟹", "獅子", "處女",
-    "天秤", "天蠍", "射手", "山羊", "水瓶", "雙魚"
-  ];
-  const getSign = (lon) => zodiacSigns[Math.floor(((lon % 360) / 30))];
+.report {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+}
 
-  // 🔹 輸出報告
-  const now = new Date().toLocaleString("zh-HK", { timeZone: "Asia/Hong_Kong" });
-  const container = document.getElementById("report");
-  container.innerHTML = `
-    <div class="result">
-      <h3>📅 出生日期時間：</h3>
-      <p>${dateStr} ${timeStr} (UTC+08:00)</p>
-      <h3>📍 出生地點：</h3>
-      <p>${place}</p>
-      <h3>🗓️ 報告生成時間：</h3>
-      <p>${now}</p>
-      <hr>
-      <h3>🌠 行星示例（版本 A）</h3>
-      <p>☉ 太陽在 ${getSign(lonSun)}（${lonSun.toFixed(2)}°）</p>
-      <p>♂ 火星在 ${getSign(lonMars)}（${lonMars.toFixed(2)}°）</p>
-      <p>♃ 木星在 ${getSign(lonJup)}（${lonJup.toFixed(2)}°）</p>
-    </div>
-  `;
-});
+.planet-section {
+  margin-top: 1em;
+  border-top: 1px solid #ccc;
+  padding-top: 1em;
+}
