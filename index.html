@@ -2,33 +2,29 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="utf-8">
-  <title>🌟 星盤分析系統</title>
+  <title>星盤分析系統 Web 版</title>
   <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/gh/cyberyoni/swejs/dist/swe.js"></script>
 </head>
 <body>
   <div class="container">
-    <h1>🌠 星盤分析系統 Web 版</h1>
-
+    <h1>🌟 星盤分析系統 Web 版</h1>
     <form id="astroForm">
-      <label>出生日期：<input type="date" id="birthDate" required></label>
-      <label>出生時間：<input type="time" id="birthTime" required></label>
+      <label>出生日期：
+        <input type="date" id="birthDate" value="1996-08-28">
+      </label>
+      <label>出生時間：
+        <input type="time" id="birthTime" value="07:35">
+      </label>
       <label>地點：
-        <select id="birthPlace" required>
-          <option>香港</option>
-          <option>台北</option>
-          <option>上海</option>
-        </select>
+        <input type="text" id="birthPlace" value="香港">
       </label>
       <button type="submit">產生報告</button>
     </form>
 
-    <section id="report"></section>
+    <div id="report" class="report"></div>
   </div>
 
   <script src="script.js"></script>
-  <!-- Astronomy calculation library -->
-<script src="https://cdn.jsdelivr.net/npm/astronomia@2.2.0/lib/index.umd.js"></script>
-<script src="script.js"></script>
 </body>
 </html>
-
