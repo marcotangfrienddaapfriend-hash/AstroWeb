@@ -1,6 +1,6 @@
 // === Star Report Web Version ===
 (async () => {
-  const swe = await sWeph();
+  const swe = await sweph();
   console.log("✅ Swiss Ephemeris 初始化完成");
 
   const signNames = [
@@ -112,3 +112,4 @@
     `;
   });
 })();
+
