@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <title>星盤分析系統 Web 版</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style.css">
+
+  <!-- ✅ 引入 Swiss Ephemeris 模組 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweph@2.10.0/dist/sweph.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>🌟 星盤分析系統 Web 版</h1>
+
+    <form id="astroForm">
+      <label>出生日期：
+        <input type="date" id="birthDate" value="1996-08-28">
+      </label>
+      <label>出生時間：
+        <input type="time" id="birthTime" value="07:35">
+      </label>
+      <label>地點：
+        <input type="text" id="birthPlace" placeholder="例：香港">
+      </label>
+      <button type="submit">產生報告</button>
+    </form>
+
+    <div id="report" class="report"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
