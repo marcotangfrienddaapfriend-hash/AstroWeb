@@ -1,55 +1,41 @@
 body {
-  font-family: 'Noto Sans TC', sans-serif;
-  background: #f7faff;
+  font-family: "Noto Sans TC", sans-serif;
+  background: #eef3f7;
   color: #222;
   margin: 0;
-  padding: 20px;
 }
-
 .container {
-  max-width: 900px;
-  margin: auto;
+  max-width: 800px;
+  background: #fff;
+  margin: 2rem auto;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
-
-h1 {
-  text-align: center;
-  color: #2a479e;
-}
-
-form {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-bottom: 20px;
-}
-
-input, button {
-  padding: 5px 10px;
-  font-size: 1em;
-}
-
+form label { margin-right: 1rem; }
 button {
-  background: #4263eb;
-  color: white;
+  background: #3498db;
+  color: #fff;
   border: none;
-  cursor: pointer;
-  border-radius: 4px;
+  padding: 6px 12px;
+  border-radius: 5px;
 }
-
-button:hover {
-  background: #2748c9;
+button:hover { background: #2070a0; }
+.result {
+  background: #f8fbff;
+  border-left: 4px solid #74b9ff;
+  padding: 1rem;
+  margin-top: 1rem;
 }
-
-.report {
-  background: white;
-  border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+.chart {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 1rem;
 }
-
-.planet-section {
-  margin-top: 1em;
-  border-top: 1px solid #ccc;
-  padding-top: 1em;
+.bar div {
+  width: 40px;
+  border-radius: 5px;
+  margin-bottom: 0.5rem;
+  background: #74b9ff;
+  transition: height 0.5s;
 }
