@@ -1,41 +1,27 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>🌞 星盤分析系統 Web 版</title>
-  <link rel="stylesheet" href="style.css" />
-  <script src="https://cdn.jsdelivr.net/npm/sweph@2.10.0/dist/sweph.min.js?v=15"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🌌 星盤分析系統 Web 版</title>
+  <link rel="stylesheet" href="style.css">
 
-  <script>
-  // ===== sweph安全載入檢查 =====
-  (function ensureSwephLoaded(retries = 0) {
-    if (typeof window.sweph === "undefined") {
-      if (retries > 5) {
-        alert("⚠️ 無法載入 sweph 模組，請重新整理頁面再試。");
-        return;
-      }
-      console.log(`重試 sweph 載入中...（${retries + 1}/5）`);
-      setTimeout(() => ensureSwephLoaded(retries + 1), 1200);
-      return;
-    }
-    console.log("✅ sweph 載入成功！");
-  })();
-  </script>
+  <!-- ✅ 改成建議使用的官方穩定 CDN -->
+  <script src="https://cdn.jsdelivr.net/gh/andrmoel/SwissEphemerisJS/sweph.js"></script>
 </head>
+
 <body>
   <div class="container">
-    <h2>🪐 星盤分析系統 Web 版</h2>
-
+    <h2>🌟 星盤分析系統 Web 版</h2>
     <form id="astroForm">
       <label for="birthDate">出生日期：</label>
-      <input type="date" id="birthDate" required />
+      <input type="date" id="birthDate" required>
 
       <label for="birthTime">出生時間：</label>
-      <input type="time" id="birthTime" required />
+      <input type="time" id="birthTime" required>
 
       <label for="birthPlace">地點：</label>
-      <input type="text" id="birthPlace" placeholder="例：香港" required />
+      <input type="text" id="birthPlace" placeholder="例如：香港" required>
 
       <button type="submit">產生報告</button>
     </form>
@@ -44,56 +30,70 @@
   </div>
 
   <script>
-  // ===== 安全防護 =====
-  if (typeof sweph === "undefined") {
-    throw new Error("Sweph 模組尚未正確載入！");
-  }
-
-  // ===== 產生報告主程式 =====
-  async function generateReport(date, time, place) {
-    try {
-      const [yyyy, mm, dd] = date.split("-").map(Number);
-      const [hh, mi] = time.split(":").map(Number);
-      const jd = sweph.swe_julday(yyyy, mm, dd, hh + mi / 60, sweph.SE_GREG_CAL);
-
-      // 🪐 行星與代碼
-      const planetCodes = [
-        sweph.SE_SUN, sweph.SE_MOON, sweph.SE_MERCURY, sweph.SE_VENUS, sweph.SE_MARS,
-        sweph.SE_JUPITER, sweph.SE_SATURN, sweph.SE_URANUS, sweph.SE_NEPTUNE, sweph.SE_PLUTO
-      ];
-      const planetNames = ["太陽 ☉","月亮 ☽","水星 ☿","金星 ♀","火星 ♂","木星 ♃","土星 ♄","天王星 ♅","海王星 ♆","冥王星 ♇"];
-
-      // ♈ 12星座對照表
-      const zodiacs = ["牡羊座","金牛座","雙子座","巨蟹座","獅子座","處女座","天秤座","天蠍座","射手座","摩羯座","水瓶座","雙魚座"];
-
-      let output = `📅 日期：${yyyy}/${mm}/${dd}\n🕒 時間：${hh}:${mi.toString().padStart(2,"0")}\n📍 地點：${place}\n\n=== 行星位置 ===\n`;
-
-      for (let i = 0; i < planetCodes.length; i++) {
-        const result = sweph.swe_calc_ut(jd, planetCodes[i], sweph.SEFLG_SWIEPH);
-        const lon = result.longitude;
-        const sign = zodiacs[Math.floor(lon / 30)];
-        const deg = (lon % 30).toFixed(2);
-        output += `${planetNames[i]}：${sign} ${deg}°\n`;
+    // ===== 安全載入 sweph 模組 =====
+    function ensureSwephLoaded(retries = 0) {
+      if (typeof window.sweph === "undefined") {
+        if (retries > 10) {
+          alert("⚠️ Sweph 模組仍未正確載入，請重新整理頁面！");
+          throw new Error("Sweph 模組載入失敗！");
+        }
+        console.log(`🔄 重試 sweph 載入中... (${retries + 1}/10)`);
+        setTimeout(() => ensureSwephLoaded(retries + 1), 1000);
+        return;
       }
-
-      return output;
-    } catch (err) {
-      return `⚠️ 發生錯誤：${err.message}`;
+      console.log("✅ Sweph 模組載入成功！");
     }
-  }
 
-  // ===== 綁定表單事件 =====
-  document.getElementById("astroForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const date = document.getElementById("birthDate").value;
-    const time = document.getElementById("birthTime").value;
-    const place = document.getElementById("birthPlace").value;
-    const report = document.getElementById("report");
+    ensureSwephLoaded(); // 一開始先檢查載入狀態
 
-    report.textContent = "🧮 星盤計算中，請稍候...";
-    const text = await generateReport(date, time, place);
-    report.textContent = text;
-  });
+    // ===== 產生報告主程式 =====
+    async function generateReport(date, time, place) {
+      try {
+        if (typeof sweph === "undefined") {
+          throw new Error("Sweph 模組尚未正確載入！");
+        }
+
+        const [yyyy, mm, dd] = date.split("-").map(Number);
+        const [hh, mi] = time.split(":").map(Number);
+        const jd = sweph.swe_julday(yyyy, mm, dd, hh + mi/60, sweph.SE_GREG_CAL);
+
+        const planetCodes = [
+          sweph.SE_SUN, sweph.SE_MOON, sweph.SE_MERCURY, sweph.SE_VENUS, sweph.SE_MARS,
+          sweph.SE_JUPITER, sweph.SE_SATURN, sweph.SE_URANUS, sweph.SE_NEPTUNE, sweph.SE_PLUTO
+        ];
+        const planetNames = ["太陽 ☉","月亮 ☽","水星 ☿","金星 ♀","火星 ♂",
+                             "木星 ♃","土星 ♄","天王星 ♅","海王星 ♆","冥王星 ♇"];
+        const zodiacs = ["牡羊座","金牛座","雙子座","巨蟹座","獅子座","處女座",
+                         "天秤座","天蠍座","射手座","摩羯座","水瓶座","雙魚座"];
+
+        let output = `📅 出生日期：${yyyy}/${mm}/${dd}\n🕒 出生時間：${hh}:${mi.toString().padStart(2,"0")}\n📍 地點：${place}\n\n=== 行星位置 ===\n`;
+
+        for (let i = 0; i < planetCodes.length; i++) {
+          const result = sweph.swe_calc_ut(jd, planetCodes[i], sweph.SEFLG_SWIEPH);
+          const lon = result.longitude;
+          const sign = zodiacs[Math.floor(lon / 30)];
+          const deg = (lon % 30).toFixed(2);
+          output += `${planetNames[i]}：${sign} ${deg}°\n`;
+        }
+
+        return output;
+      } catch (err) {
+        return `⚠️ 發生錯誤：${err.message}`;
+      }
+    }
+
+    // ===== 綁定表單與輸出區 =====
+    document.getElementById("astroForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const date = document.getElementById("birthDate").value;
+      const time = document.getElementById("birthTime").value;
+      const place = document.getElementById("birthPlace").value;
+      const report = document.getElementById("report");
+      report.textContent = "🧮 星盤生成中...";
+
+      const result = await generateReport(date, time, place);
+      report.textContent = result;
+    });
   </script>
 </body>
 </html>
